@@ -164,6 +164,10 @@ function running() {
 # Initialize products
 enable_router
 for (( i = 1; i <= $DEVS; ++i )); do
+        disable_product $i
+done
+sleep 3
+for (( i = 1; i <= $DEVS; ++i )); do
         enable_product $i
 done
 echo "Waiting until products are ready..."
