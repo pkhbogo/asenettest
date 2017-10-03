@@ -3,6 +3,8 @@
 USRPWD="admin:12345678"
 SWITCH_IP="192.168.128.210"
 SWITCH2_IP="192.168.128.220"
+LOG_REPORT_URL="/api/setData?path=BeoPortal%3AlogReport%2Fsend&roles=activate&value=%7B%22type%22%3A%22bool_%22%2C%22bool_%22%3Atrue%7D"
+EXTENDED_LOG_FILE="/media/settings/logs/mwifiex_logs.txt"
 
 # M3
 DEV1_IP="192.168.128.157"
@@ -11,7 +13,7 @@ DEV1_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p61="
 DEV1_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 
 echo performance > /sys/module/pcie_aspm/parameters/policy
 "
@@ -23,7 +25,7 @@ DEV2_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p62="
 DEV2_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 # M3
@@ -39,7 +41,7 @@ DEV4_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p64="
 DEV4_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 # M5
@@ -49,7 +51,7 @@ DEV5_POWER_URL="http://${USRPWD}@${SWITCH_IP}/set.cmd?cmd=setpower+p63="
 DEV5_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 # BS 2
@@ -59,7 +61,7 @@ DEV6_POWER_URL="http://${USRPWD}@${SWITCH_IP}/set.cmd?cmd=setpower+p62="
 DEV6_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 DEVS=6
@@ -159,6 +161,7 @@ function running() {
         echo 0
 }
 
+# Initialize products
 enable_router
 for (( i = 1; i <= $DEVS; ++i )); do
         enable_product $i
@@ -177,6 +180,7 @@ for (( i = 1; i <= $DEVS; ++i )); do
         fi
 done
 
+# Run tests
 while [ $(running) -eq 1 ]; do
 	echo "Attempts: ${ATTEMPT}"
 	
@@ -194,3 +198,17 @@ while [ $(running) -eq 1 ]; do
 	sleep 10
 	let ATTEMPT=ATTEMPT+1
 done
+
+# Submit logs and get the extended log
+for (( i = 1; i <= $DEVS; ++i )); do
+        enable_product $i
+done
+echo "Waiting until products are ready..."
+sleep 120
+for (( i = 1; i <= $DEVS; ++i )); do
+        setup_product_env $i
+        curl "http://${DEV_IP}${LOG_REPORT_URL}"
+        scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$EXTENDED_LOG_FILE $i_$(basename $EXTENDED_LOG_FILE)
+done
+
+
