@@ -11,7 +11,7 @@ DEV1_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p61="
 DEV1_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /tmp/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
 
 echo performance > /sys/module/pcie_aspm/parameters/policy
 "
@@ -23,7 +23,7 @@ DEV2_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p62="
 DEV2_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /tmp/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
 "
 
 # M3
@@ -39,7 +39,7 @@ DEV4_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p64="
 DEV4_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /tmp/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
 "
 
 # M5
@@ -49,7 +49,7 @@ DEV5_POWER_URL="http://${USRPWD}@${SWITCH_IP}/set.cmd?cmd=setpower+p63="
 DEV5_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /tmp/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
 "
 
 # BS 2
@@ -59,7 +59,7 @@ DEV6_POWER_URL="http://${USRPWD}@${SWITCH_IP}/set.cmd?cmd=setpower+p62="
 DEV6_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-nohup /bin/sh -c 'while true; do dmesg -c >> /tmp/mwifiex_logs.txt; sleep 1; done &'
+nohup /bin/sh -c 'while true; do dmesg -c >> /media/settings/logs/mwifiex_logs.txt; sleep 1; done &'
 "
 
 DEVS=6
