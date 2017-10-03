@@ -153,7 +153,7 @@ while [ $(running) -eq 1 ]; do
 	
 	enable_router
 	echo "Waiting until router is ready...."
-	sleep 120
+	sleep 240
 	date
 
         for (( i = 1; i <= $DEVS; ++i )); do
