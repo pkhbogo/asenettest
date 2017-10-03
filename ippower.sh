@@ -5,7 +5,9 @@ SWITCH_IP="192.168.128.210"
 SWITCH2_IP="192.168.128.220"
 LOG_REPORT_URL="/api/setData?path=BeoPortal%3AlogReport%2Fsend&roles=activate&value=%7B%22type%22%3A%22bool_%22%2C%22bool_%22%3Atrue%7D"
 EXTENDED_LOG_FILE="/media/settings/logs/mwifiex_logs.txt"
-PRE_INIT_SCRIPT="sed -i 's/\\/var\\/log\\/messages/\\/media\\/settings\\/logs\\/messages/' /etc/syslog-startup.conf"
+PRE_INIT_SCRIPT="
+sed -i 's/\\/var\\/log\\/messages/\\/media\\/settings\\/logs\\/messages/' /etc/syslog-startup.conf
+poweroff"
 
 # M3
 DEV1_IP="192.168.128.157"
@@ -180,7 +182,7 @@ for (( i = 1; i <= $DEVS; ++i )); do
 		fi
         fi
 done
-sleep 3
+sleep 10
 for (( i = 1; i <= $DEVS; ++i )); do
         disable_product $i
 done
