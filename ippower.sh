@@ -208,7 +208,7 @@ sleep 120
 for (( i = 1; i <= $DEVS; ++i )); do
         setup_product_env $i
         curl "http://${DEV_IP}${LOG_REPORT_URL}"
-        scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$EXTENDED_LOG_FILE $i_$(basename $EXTENDED_LOG_FILE)
+        scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$EXTENDED_LOG_FILE ${i}_$(basename $EXTENDED_LOG_FILE)
 done
 
 
