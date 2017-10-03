@@ -5,9 +5,6 @@ SWITCH_IP="192.168.128.210"
 SWITCH2_IP="192.168.128.220"
 LOG_REPORT_URL="/api/setData?path=BeoPortal%3AlogReport%2Fsend&roles=activate&value=%7B%22type%22%3A%22bool_%22%2C%22bool_%22%3Atrue%7D"
 EXTENDED_LOG_FILE="/media/settings/logs/mwifiex_logs.txt"
-PRE_INIT_SCRIPT="
-sed -i 's/\\/var\\/log\\/messages/\\/media\\/settings\\/logs\\/messages/' /etc/syslog-startup.conf
-sync"
 
 # M3
 DEV1_IP="192.168.128.157"
@@ -175,27 +172,6 @@ for (( i = 1; i <= $DEVS; ++i )); do
 done
 echo "Waiting until products are ready..."
 sleep 120
-for (( i = 1; i <= $DEVS; ++i )); do
-        setup_product_env $i
-        if [ -n "$DEV_INIT_SCRIPT" ]; then
-                echo "Preinit product $i"
-                ssh -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@$DEV_IP "$PRE_INIT_SCRIPT"
-		if [ $? -ne 0 ]; then
-			echo "Failed initialization"
-			exit 1
-		fi
-        fi
-done
-sleep 10
-for (( i = 1; i <= $DEVS; ++i )); do
-        disable_product $i
-done
-sleep 10
-for (( i = 1; i <= $DEVS; ++i )); do
-        enable_product $i
-done
-echo "Waiting until products are ready..."
-sleep 240
 for (( i = 1; i <= $DEVS; ++i )); do
         setup_product_env $i
         if [ -n "$DEV_INIT_SCRIPT" ]; then
