@@ -52,18 +52,22 @@ function setup_product_env() {
 	DEV_IP_CMD="DEV${1}_IP"
 	DEV_SERIAL_CMD="DEV${1}_SERIAL"
 	DEV_INIT_CMD="DEV${1}_INIT_SCRIPT"
+	DEV_DISABLE_BNR_CMD="DEV${1}_DISABLE_BNR"
+	DEV_DISABLE_BONJOUR_CMD="DEV${1}_DISABLE_BONJOUR"
 	POWER_URL="${!POWER_URL_CMD}"
 	ENABLED="${!ENABLED_CMD}"
 	DEV_IP="${!DEV_IP_CMD}"
 	DEV_SERIAL="${!DEV_SERIAL_CMD}"
 	DEV_INIT_SCRIPT="${!DEV_INIT_CMD}"
+	DEV_DISBALE_BNR="${!DEV_DISABLE_BNR_CMD}"
+	DEV_DISABLE_BONJOUR="${!DEV_DISABLE_BONJOUR_CMD}"
 }
 
 function enable_product() {
 	setup_product_env $1
-	echo "Enabling product: $1"
 	eval ${ENABLED_CMD}=true
 	if [ -n "$POWER_URL" ]; then
+		echo "Enabling product: $1"
 		curl "${POWER_URL}1"
 		if [ $? -ne 0 ]; then
 			echo "Error enabling product $1"
@@ -74,9 +78,9 @@ function enable_product() {
 
 function disable_product() {
 	setup_product_env $1
-	echo "Disabling product: $1"
 	eval ${ENABLED_CMD}=false
 	if [ -n "$POWER_URL" ]; then
+		echo "Disabling product: $1"
 		curl "${POWER_URL}0"
 		if [ $? -ne 0 ]; then
 			echo "Error disabling product $1"
@@ -104,30 +108,38 @@ function runTest()
 	fi
 
 	# Test Bonjour
-	echo "Testing Bonjour..."
-	beoremotes=$(avahi-browse -t _beoremote._tcp | grep "${DEV_SERIAL}" | wc -l)
-	if [ $? -ne 0 ]; then
-		echo "Failed when checking Bonjour"
-		date
-		disable_product $1
-		return
-	fi
-	echo "Bonjour _beoremote._tcp nodes: $beoremotes"
-	if [ $beoremotes -ne 1 ]; then
-		echo "Not enough beoremotes"
-		date
-		disable_product $1
-		return
+	if [ -z "$DEV_DISABLE_BONJOUR" ]; then
+		echo "Testing Bonjour..."
+		beoremotes=$(avahi-browse -t _beoremote._tcp | grep "${DEV_SERIAL}" | wc -l)
+		if [ $? -ne 0 ]; then
+			echo "Failed when checking Bonjour"
+			date
+			disable_product $1
+			return
+		fi
+		echo "Bonjour _beoremote._tcp nodes: $beoremotes"
+		if [ $beoremotes -ne 1 ]; then
+			echo "Not enough beoremotes"
+			date
+			disable_product $1
+			return
+		fi
+	else
+		echo "Bonjour test disabled"
 	fi
 
 	# Test BNR
-	echo "Testing BNR..."
-	nmap -p 8080 -PS "${DEV_IP}"
-	if [ $? -ne 0 ]; then
-		echo "BNR not responding"
-		date
-		disable_product $1
-		return
+	if [ -z "$DEV_DISABLE_BNR" ]; then
+		echo "Testing BNR..."
+		nmap -p 8080 -PS "${DEV_IP}"
+		if [ $? -ne 0 ]; then
+			echo "BNR not responding"
+			date
+			disable_product $1
+			return
+		fi
+	else
+		echo "BNR test disabled"
 	fi
 }
 
@@ -147,12 +159,12 @@ enable_router
 for (( i = 1; i <= $DEVS; ++i )); do
 	disable_product $i
 done
-sleep 10
+sleep 20
 for (( i = 1; i <= $DEVS; ++i )); do
 	enable_product $i
 done
 echo "Waiting until products are ready..."
-sleep 120
+sleep 240
 for (( i = 1; i <= $DEVS; ++i )); do
 	setup_product_env $i
 	if [ -n "$DEV_INIT_SCRIPT" ]; then
@@ -189,7 +201,7 @@ done
 #	enable_product $i
 #done
 #echo "Waiting until products are ready..."
-#sleep 120
+#sleep 240
 #for (( i = 1; i <= $DEVS; ++i )); do
 #	setup_product_env $i
 #	curl "http://${DEV_IP}${LOG_REPORT_URL}"
