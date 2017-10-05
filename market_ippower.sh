@@ -29,11 +29,19 @@ let ATTEMPT=1
 function enable_router() {
 	echo "Enable router ..."
 	curl "http://"${USRPWD}"@"${SWITCH_IP}"/set.cmd?cmd=setpower+p61=1"
+        if [ $? -ne 0 ];
+                echo "Error communicating with power switch @ $SWITCH_IP"
+                exit 1
+        fi
 }
 
 function disable_router() {
 	echo "Disable router ..."
 	curl "http://"${USRPWD}"@"${SWITCH_IP}"/set.cmd?cmd=setpower+p61=0"
+        if [ $? -ne 0 ];
+                echo "Error communicating with power switch @ $SWITCH_IP"
+                exit 1
+        fi
 }
 
 function setup_product_env() {
@@ -55,6 +63,10 @@ function enable_product() {
         eval ${ENABLED_CMD}=true
         if [ -n "$POWER_URL" ]; then
                 curl "${POWER_URL}1"
+                if [ $? -ne 0 ];
+                        echo "Error enabling product $1"
+                        exit 1
+                fi
         fi
 }
 
@@ -64,6 +76,10 @@ function disable_product() {
         eval ${ENABLED_CMD}=false
         if [ -n "$POWER_URL" ]; then
                 curl "${POWER_URL}0"
+                if [ $? -ne 0 ];
+                        echo "Error disabling product $1"
+                        exit 1
+                fi
         fi
 }
 
