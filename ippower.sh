@@ -79,7 +79,7 @@ DEV7_INIT_SCRIPT=""
 DEV7_DISABLE_BNR=yes
 
 
-DEVS=6
+DEVS=7
 let ATTEMPT=1
 
 function enable_router() {
