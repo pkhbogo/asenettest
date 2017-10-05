@@ -213,12 +213,12 @@ enable_router
 for (( i = 1; i <= $DEVS; ++i )); do
 	disable_product $i
 done
-sleep 10
+sleep 20
 for (( i = 1; i <= $DEVS; ++i )); do
 	enable_product $i
 done
 echo "Waiting until products are ready..."
-sleep 120
+sleep 240
 for (( i = 1; i <= $DEVS; ++i )); do
 	setup_product_env $i
 	if [ -n "$DEV_INIT_SCRIPT" ]; then
@@ -255,7 +255,7 @@ for (( i = 1; i <= $DEVS; ++i )); do
 	enable_product $i
 done
 echo "Waiting until products are ready..."
-sleep 120
+sleep 240
 for (( i = 1; i <= $DEVS; ++i )); do
 	setup_product_env $i
 	curl "http://${DEV_IP}${LOG_REPORT_URL}"
