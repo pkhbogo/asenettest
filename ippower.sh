@@ -69,12 +69,12 @@ let ATTEMPT=1
 
 function enable_router() {
 	echo "Enable router ..."
-	curl "http://"${USRPWD}"@"${SWITCH_IP}"/set.cmd?cmd=setpower+p61=1"
+	curl "http://"${USRPWD}"@"${SWITCH_IP}"/set.cmd?cmd=setpower+p64=1"
 }
 
 function disable_router() {
 	echo "Disable router ..."
-	curl "http://"${USRPWD}"@"${SWITCH_IP}"/set.cmd?cmd=setpower+p61=0"
+	curl "http://"${USRPWD}"@"${SWITCH_IP}"/set.cmd?cmd=setpower+p64=0"
 }
 
 function setup_product_env() {
