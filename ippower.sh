@@ -16,7 +16,7 @@ DEV1_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 
 echo performance > /sys/module/pcie_aspm/parameters/policy
 "
@@ -29,7 +29,7 @@ DEV2_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 # M3
@@ -46,7 +46,7 @@ DEV4_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 # M5
@@ -57,7 +57,7 @@ DEV5_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 # BS 2
@@ -68,7 +68,7 @@ DEV6_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 
 DEVS=6
