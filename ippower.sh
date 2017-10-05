@@ -72,11 +72,12 @@ nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTEND
 "
 
 # Beolab 50
-DEV7_IP="192.168.128.178"
+DEV7_IP="192.168.128.182"
 DEV7_SERIAL="BEOLAB 50"
 DEV7_POWER_URL=""
 DEV7_INIT_SCRIPT=""
 DEV7_DISABLE_BNR=yes
+DEV7_DISABLE_BONJOUR=yes
 
 
 DEVS=7
