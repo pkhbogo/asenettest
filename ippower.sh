@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# vim:noet ts=2
+# vim:noet ts=2 sw=2
 
 USRPWD="admin:12345678"
 SWITCH_IP="192.168.128.210"
@@ -119,9 +119,9 @@ function setup_product_env() {
 
 function enable_product() {
 	setup_product_env $1
-	echo "Enabling product: $1"
 	eval ${ENABLED_CMD}=true
 	if [ -n "$POWER_URL" ]; then
+		echo "Enabling product: $1"
 		curl "${POWER_URL}1"
 		if [ $? -ne 0 ]; then
 			echo "Error enabling product $1"
@@ -132,9 +132,9 @@ function enable_product() {
 
 function disable_product() {
 	setup_product_env $1
-	echo "Disabling product: $1"
 	eval ${ENABLED_CMD}=false
 	if [ -n "$POWER_URL" ]; then
+		echo "Disabling product: $1"
 		curl "${POWER_URL}0"
 		if [ $? -ne 0 ]; then
 			echo "Error disabling product $1"
