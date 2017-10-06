@@ -251,6 +251,7 @@ while [ $(running) -eq 1 ]; do
 	let ATTEMPT=ATTEMPT+1
 done
 
+enable_router
 # Submit logs and get the extended log
 for (( i = 1; i <= $DEVS; ++i )); do
 	enable_product $i
