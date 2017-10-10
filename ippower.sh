@@ -242,6 +242,8 @@ function running() {
 
 # Initialize products
 enable_router
+echo "Waiting until router is ready..."
+sleep 120
 for (( i = 1; i <= $DEVS; ++i )); do
 	disable_product $i
 done
