@@ -250,7 +250,7 @@ function getlogs() {
   for (( i = 1; i <= $DEVS; ++i )); do
   	setup_product_env $i
   	for f in $DEV_LOG_FILES; do
-  		echo scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
+  		scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
   	done
   done
 }
