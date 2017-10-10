@@ -13,12 +13,12 @@ DEV1_IP="192.168.128.157"
 DEV1_SERIAL="94100"
 DEV1_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p61="
 DEV1_INIT_SCRIPT="
-echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
-echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
+	rm -f $EXTENDED_LOG_FILE
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 
-echo performance > /sys/module/pcie_aspm/parameters/policy
+	echo performance > /sys/module/pcie_aspm/parameters/policy
 "
 DEV1_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -31,12 +31,12 @@ DEV2_IP="192.168.128.149"
 DEV2_SERIAL="94118"
 DEV2_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p62="
 DEV2_INIT_SCRIPT="
-echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
-echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &
+	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
+	rm -f $EXTENDED_LOG_FILE
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &
 
-iwconfig wlan0 power off'
+	iwconfig wlan0 power off'
 "
 DEV2_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -55,10 +55,10 @@ DEV4_IP="192.168.128.160"
 DEV4_SERIAL="93717"
 DEV4_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p64="
 DEV4_INIT_SCRIPT="
-echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
-echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
+	rm -f $EXTENDED_LOG_FILE
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 DEV4_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -71,10 +71,10 @@ DEV5_IP="192.168.128.161"
 DEV5_SERIAL="94349"
 DEV5_POWER_URL="http://${USRPWD}@${SWITCH_IP}/set.cmd?cmd=setpower+p63="
 DEV5_INIT_SCRIPT="
-echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
-echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
+	rm -f $EXTENDED_LOG_FILE
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 DEV5_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -87,10 +87,10 @@ DEV6_IP="192.168.128.86"
 DEV6_SERIAL="93297"
 DEV6_POWER_URL="http://${USRPWD}@${SWITCH_IP}/set.cmd?cmd=setpower+p62="
 DEV6_INIT_SCRIPT="
-echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
-echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
-rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
+	rm -f $EXTENDED_LOG_FILE
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 DEV6_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -103,7 +103,7 @@ DEV7_IP="192.168.128.193"
 DEV7_SERIAL="BEOLAB 50"
 DEV7_POWER_URL=""
 DEV7_INIT_SCRIPT="
-iwpriv mlan0 drvdbg 0x20037
+	iwpriv mlan0 drvdbg 0x20037
 "
 DEV7_DISABLE_BNR=yes
 DEV7_DISABLE_BONJOUR=yes
@@ -241,18 +241,18 @@ function running() {
 }
 
 function getlogs() {
-  enable_router
-  for (( i = 1; i <= $DEVS; ++i )); do
-  	enable_product $i
-  done
-  echo "Waiting until products are ready..."
-  sleep 240
-  for (( i = 1; i <= $DEVS; ++i )); do
-  	setup_product_env $i
-  	for f in $DEV_LOG_FILES; do
-  		scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
-  	done
-  done
+	enable_router
+	for (( i = 1; i <= $DEVS; ++i )); do
+		enable_product $i
+	done
+	echo "Waiting until products are ready..."
+	sleep 240
+	for (( i = 1; i <= $DEVS; ++i )); do
+		setup_product_env $i
+		for f in $DEV_LOG_FILES; do
+			scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
+		done
+	done
 }
 
 if [ "$1" == "-l" ]; then 
