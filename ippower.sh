@@ -20,6 +20,11 @@ nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTEND
 
 echo performance > /sys/module/pcie_aspm/parameters/policy
 "
+DEV1_LOG_FILES="
+	$EXTENDED_LOG_FILE
+	/media/settings/logs/messages
+	/media/settings/logs/log-nSDK
+"
 
 # M3
 DEV2_IP="192.168.128.149"
@@ -29,7 +34,14 @@ DEV2_INIT_SCRIPT="
 echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
-nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &
+
+iwconfig wlan0 power off'
+"
+DEV2_LOG_FILES="
+	$EXTENDED_LOG_FILE
+	/media/settings/logs/messages
+	/media/settings/logs/log-nSDK
 "
 
 # M3
@@ -48,6 +60,11 @@ echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
 nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
+DEV4_LOG_FILES="
+	$EXTENDED_LOG_FILE
+	/media/settings/logs/messages
+	/media/settings/logs/log-nSDK
+"
 
 # M5
 DEV5_IP="192.168.128.161"
@@ -58,6 +75,11 @@ echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
 echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
 nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+"
+DEV5_LOG_FILES="
+	$EXTENDED_LOG_FILE
+	/media/settings/logs/messages
+	/media/settings/logs/log-nSDK
 "
 
 # BS 2
@@ -70,15 +92,22 @@ echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 rm -f $EXTENDED_LOG_FILE
 nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
+DEV6_LOG_FILES="
+	$EXTENDED_LOG_FILE
+	/media/settings/logs/messages
+	/media/settings/logs/log-nSDK
+"
 
 # Beolab 50
 DEV7_IP="192.168.128.193"
 DEV7_SERIAL="BEOLAB 50"
 DEV7_POWER_URL=""
-DEV7_INIT_SCRIPT=""
+DEV7_INIT_SCRIPT="
+iwpriv mlan0 drvdbg 0x20037
+"
 DEV7_DISABLE_BNR=yes
 DEV7_DISABLE_BONJOUR=yes
-
+DEV7_LOG_FILES=""
 
 DEVS=7
 let ATTEMPT=1
@@ -109,6 +138,7 @@ function setup_product_env() {
 	DEV_INIT_CMD="DEV${1}_INIT_SCRIPT"
 	DEV_DISABLE_BNR_CMD="DEV${1}_DISABLE_BNR"
 	DEV_DISABLE_BONJOUR_CMD="DEV${1}_DISABLE_BONJOUR"
+	DEV_LOG_FILES_CMD="DEV${1}_LOG_FILES"
 	POWER_URL="${!POWER_URL_CMD}"
 	ENABLED="${!ENABLED_CMD}"
 	DEV_IP="${!DEV_IP_CMD}"
@@ -116,6 +146,7 @@ function setup_product_env() {
 	DEV_INIT_SCRIPT="${!DEV_INIT_CMD}"
 	DEV_DISBALE_BNR="${!DEV_DISABLE_BNR_CMD}"
 	DEV_DISABLE_BONJOUR="${!DEV_DISABLE_BONJOUR_CMD}"
+	DEV_LOG_FILES="${!DEV_LOG_FILES_CMD}"
 }
 
 function enable_product() {
@@ -260,8 +291,7 @@ echo "Waiting until products are ready..."
 sleep 240
 for (( i = 1; i <= $DEVS; ++i )); do
 	setup_product_env $i
-	curl "http://${DEV_IP}${LOG_REPORT_URL}"
-	scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$EXTENDED_LOG_FILE ${i}_$(basename $EXTENDED_LOG_FILE)
-	scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:/media/settings/logs/messages ${i}_messages
-	scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:/media/settings/logs/log-nSDK ${i}_log-nSDK
+	for f in $DEV_LOG_FILES; do
+		echo scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
+	done
 done
