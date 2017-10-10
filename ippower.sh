@@ -240,6 +240,26 @@ function running() {
 	echo 0
 }
 
+function getlogs() {
+  enable_router
+  for (( i = 1; i <= $DEVS; ++i )); do
+  	enable_product $i
+  done
+  echo "Waiting until products are ready..."
+  sleep 240
+  for (( i = 1; i <= $DEVS; ++i )); do
+  	setup_product_env $i
+  	for f in $DEV_LOG_FILES; do
+  		echo scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
+  	done
+  done
+}
+
+if [ "$1" == "-l" ]; then 
+	getlogs
+	exit
+fi
+
 # Initialize products
 enable_router
 echo "Waiting until router is ready..."
@@ -284,16 +304,5 @@ while [ $(running) -eq 1 ]; do
 	let ATTEMPT=ATTEMPT+1
 done
 
-enable_router
-# Submit logs and get the extended log
-for (( i = 1; i <= $DEVS; ++i )); do
-	enable_product $i
-done
-echo "Waiting until products are ready..."
-sleep 240
-for (( i = 1; i <= $DEVS; ++i )); do
-	setup_product_env $i
-	for f in $DEV_LOG_FILES; do
-		echo scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" root@${DEV_IP}:$f ${i}_$(basename $f)
-	done
-done
+getlogs
+
