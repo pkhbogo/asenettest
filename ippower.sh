@@ -104,10 +104,14 @@ DEV7_SERIAL="BEOLAB 50"
 DEV7_POWER_URL=""
 DEV7_INIT_SCRIPT="
 	iwpriv mlan0 drvdbg 0x20037
+
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 DEV7_DISABLE_BNR=yes
 DEV7_DISABLE_BONJOUR=yes
-DEV7_LOG_FILES=""
+DEV7_LOG_FILES="
+	$EXTENDED_LOG_FILE
+"
 
 DEVS=7
 let ATTEMPT=1
