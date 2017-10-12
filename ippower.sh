@@ -13,7 +13,7 @@ DEV1_IP="192.168.128.157"
 DEV1_SERIAL="94100"
 DEV1_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p61="
 DEV1_INIT_SCRIPT="
-	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex_pcie +p' > /sys/kernel/debug/dynamic_debug/control
 	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 	rm -f $EXTENDED_LOG_FILE
 	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
@@ -31,12 +31,10 @@ DEV2_IP="192.168.128.149"
 DEV2_SERIAL="94118"
 DEV2_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p62="
 DEV2_INIT_SCRIPT="
-	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex_pcie +p' > /sys/kernel/debug/dynamic_debug/control
 	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 	rm -f $EXTENDED_LOG_FILE
-	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &
-
-	iwconfig wlan0 power off'
+	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 DEV2_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -55,7 +53,7 @@ DEV4_IP="192.168.128.160"
 DEV4_SERIAL="93717"
 DEV4_POWER_URL="http://${USRPWD}@${SWITCH2_IP}/set.cmd?cmd=setpower+p64="
 DEV4_INIT_SCRIPT="
-	echo -n 'module mwifiex_usb +p' > /sys/kernel/debug/dynamic_debug/control
+	echo -n 'module mwifiex_pcie +p' > /sys/kernel/debug/dynamic_debug/control
 	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 	rm -f $EXTENDED_LOG_FILE
 	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
@@ -103,14 +101,10 @@ DEV7_IP="192.168.128.193"
 DEV7_SERIAL="BEOLAB 50"
 DEV7_POWER_URL=""
 DEV7_INIT_SCRIPT="
-	iwpriv mlan0 drvdbg 0x20037
-
-	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 "
 DEV7_DISABLE_BNR=yes
 DEV7_DISABLE_BONJOUR=yes
 DEV7_LOG_FILES="
-	$EXTENDED_LOG_FILE
 "
 
 DEVS=7
@@ -295,7 +289,7 @@ while [ $(running) -eq 1 ]; do
 	
 	enable_router
 	echo "Waiting until router is ready...."
-	sleep 120
+	sleep 180
 	date
 
 	for (( i = 1; i <= $DEVS; ++i )); do
