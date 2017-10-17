@@ -79,6 +79,7 @@ DEV5_INIT_SCRIPT="
 	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 	rm -f $EXTENDED_LOG_FILE
 	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+       iwconfig wlan0 power off
 "
 DEV5_LOG_FILES="
 	$EXTENDED_LOG_FILE
@@ -105,17 +106,17 @@ DEV6_LOG_FILES="
 "
 
 # Beolab 50
-DEV7_IP="192.168.128.193"
-DEV7_SERIAL="BEOLAB 50"
-DEV7_POWER_URL=""
-DEV7_INIT_SCRIPT="
-"
-DEV7_DISABLE_BNR=yes
-DEV7_DISABLE_BONJOUR=yes
-DEV7_LOG_FILES="
-"
+#DEV7_IP="192.168.128.193"
+#DEV7_SERIAL="BEOLAB 50"
+#DEV7_POWER_URL=""
+#DEV7_INIT_SCRIPT="
+#"
+#DEV7_DISABLE_BNR=yes
+#DEV7_DISABLE_BONJOUR=yes
+#DEV7_LOG_FILES="
+#"
 
-DEVS=7
+DEVS=6
 let ATTEMPT=1
 
 function enable_router() {
