@@ -19,11 +19,13 @@ DEV1_INIT_SCRIPT="
 	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
 
 	echo performance > /sys/module/pcie_aspm/parameters/policy
+	iwconfig wlan0 power off
 "
 DEV1_LOG_FILES="
 	$EXTENDED_LOG_FILE
 	/media/settings/logs/messages
 	/media/settings/logs/log-nSDK
+	/media/settings/logs/log-scwd
 "
 
 # M3
@@ -35,11 +37,14 @@ DEV2_INIT_SCRIPT="
 	echo -n 'module mwifiex +p' > /sys/kernel/debug/dynamic_debug/control
 	rm -f $EXTENDED_LOG_FILE
 	nohup /bin/sh -c 'while true; do date >> $EXTENDED_LOG_FILE; dmesg -c >> $EXTENDED_LOG_FILE; sleep 1; done &'
+
+	iwconfig wlan0 power off
 "
 DEV2_LOG_FILES="
 	$EXTENDED_LOG_FILE
 	/media/settings/logs/messages
 	/media/settings/logs/log-nSDK
+	/media/settings/logs/log-scwd
 "
 
 # M3
@@ -62,6 +67,7 @@ DEV4_LOG_FILES="
 	$EXTENDED_LOG_FILE
 	/media/settings/logs/messages
 	/media/settings/logs/log-nSDK
+	/media/settings/logs/log-scwd
 "
 
 # M5
@@ -78,6 +84,7 @@ DEV5_LOG_FILES="
 	$EXTENDED_LOG_FILE
 	/media/settings/logs/messages
 	/media/settings/logs/log-nSDK
+	/media/settings/logs/log-scwd
 "
 
 # BS 2
@@ -94,6 +101,7 @@ DEV6_LOG_FILES="
 	$EXTENDED_LOG_FILE
 	/media/settings/logs/messages
 	/media/settings/logs/log-nSDK
+	/media/settings/logs/log-scwd
 "
 
 # Beolab 50
@@ -270,7 +278,7 @@ for (( i = 1; i <= $DEVS; ++i )); do
 	enable_product $i
 done
 echo "Waiting until products are ready..."
-sleep 240
+sleep 300
 for (( i = 1; i <= $DEVS; ++i )); do
 	setup_product_env $i
 	if [ -n "$DEV_INIT_SCRIPT" ]; then
